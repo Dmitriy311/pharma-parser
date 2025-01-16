@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile_php
+    container_name: parser_backend
+    ports:
+      - "8081:81"
+    restart: unless-stopped
+#    volumes:
+#      - /var/www/html/pharma-parser:/app
+
+  mysql:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile_mysql
+    container_name: parser_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: parser
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
+    restart: unless-stopped
+    volumes:
+      - db-parser:/var/lib/mysql/
+
+volumes:
+  db-parser:
